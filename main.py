@@ -12,7 +12,9 @@ def Download(args, version):
     client = fusclient.FUSClient()
     path, filename, size = getbinaryfile(client, version, args.dev_model, args.dev_region)
     out = os.path.join('.', filename)
-    dloffset = os.stat(out).st_size
+    dloffset = 0
+    if os.path.exists(out):
+        dloffset = os.stat(out).st_size
     if dloffset == size:
         print("Already downloaded.")
         return out
@@ -50,7 +52,7 @@ def Run():
         try:
             enc_file = Download(args, version)
         except:
-            print("Download failed, %d time retry..." % i+1)
+            print("Download failed, %d time retry..." % (i+1))
             continue
         print("Download succeed.")
         break 
